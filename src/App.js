@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React 테스트 입니다. 이렇게 브랜치를 사용합니다.
+          Learn React 테스트 입니다. 이렇게 브랜치를 사용합니다. 2222
         </a>
       </header>
     </div>
