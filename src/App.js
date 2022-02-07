@@ -55,6 +55,11 @@ function App() {
     nextId.current += 1;
   };
 
+  const onRemove = (id) => {
+    // 리스트에서 제거하는 것이 아닌 그냥 filtering 해주는 것 뿐...
+    setUsers(users.filter((user) => user.id !== id));
+  };
+
   return (
     <>
       <CreateUser
@@ -63,7 +68,7 @@ function App() {
         onChange={onChange}
         onCreate={onCreate}
       />
-      <UserList users={users} />
+      <UserList users={users} onRemove={onRemove} />
     </>
   );
 }
