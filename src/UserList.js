@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 function User({ user, onRemove, onToggle }) {
   const { username, email, id, active } = user;
+  // console.log(user);
   useEffect(() => {
     // console.log('컴포넌트가 화면에 나타남');
     // // props -> state

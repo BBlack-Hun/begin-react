@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, useCallback } from 'react';
 import UserList from './UserList';
 import './App.css';
 import CreateUser from './CreateUser';
@@ -8,20 +8,23 @@ function countActivateUsers(users) {
   return users.filter((user) => user.active).length;
 }
 
-function App() {
+function App({ onDoSomething }) {
   const [inputs, setInputs] = useState({
     username: '',
     email: '',
   });
 
   const { username, email } = inputs;
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
-  };
+  const onChange = useCallback(
+    (e) => {
+      const { name, value } = e.target;
+      setInputs({
+        ...inputs,
+        [name]: value,
+      });
+    },
+    [inputs]
+  );
 
   const [users, setUsers] = useState([
     {
@@ -48,7 +51,7 @@ function App() {
   const nextId = useRef(4);
 
   // 새롭게 배열에 객체를 추가하는 것.
-  const onCreate = () => {
+  const onCreate = useCallback(() => {
     const user = {
       id: nextId.current,
       username,
@@ -61,20 +64,26 @@ function App() {
       email: '',
     });
     nextId.current += 1;
-  };
+  }, [username, email, users]);
 
-  const onRemove = (id) => {
-    // 리스트에서 제거하는 것이 아닌 그냥 filtering 해주는 것 뿐...
-    setUsers(users.filter((user) => user.id !== id));
-  };
+  const onRemove = useCallback(
+    (id) => {
+      // 리스트에서 제거하는 것이 아닌 그냥 filtering 해주는 것 뿐... 근데 그걸 set 해주기 때문에, Users의 값이 바뀜
+      setUsers(users.filter((user) => user.id !== id));
+    },
+    [users]
+  );
 
-  const ontoggle = (id) => {
-    setUsers(
-      users.map((user) =>
-        user.id === id ? { ...user, active: !user.active } : user
-      )
-    );
-  };
+  const ontoggle = useCallback(
+    (id) => {
+      setUsers(
+        users.map((user) =>
+          user.id === id ? { ...user, active: !user.active } : user
+        )
+      );
+    },
+    [users]
+  );
 
   const count = useMemo(() => countActivateUsers(users), [users]);
 
